@@ -16,7 +16,7 @@ void webSocketEvent(WStype_t type, uint8_t *payload, size_t length)
     {
     case WStype_CONNECTED:
         Serial.println("✅ Connected to WSS server");
-        webSocket.sendTXT("robot_to_user|qwerty|abc|Merhaba kullanıcı");
+        webSocket.sendTXT("connectDevice|"+String(WiFi.macAddress()));
         break;
 
     case WStype_TEXT:
@@ -62,7 +62,7 @@ void beginWifi(String ssid, String password)
     Serial.println("\n📡 WiFi connected");
 }
 
-void startSparkbot(String ssid, String password)
+String startSparkbot(String ssid, String password)
 {
     beginWifi(ssid, password);
     // WebSocket'i Core 0 üzerinde ayrı task olarak başlat
@@ -75,4 +75,5 @@ void startSparkbot(String ssid, String password)
         NULL, // Task handle
         0     // Core ID (0 veya 1)
     );
+    return String(WiFi.macAddress());
 }
